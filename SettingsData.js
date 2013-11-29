@@ -1,5 +1,6 @@
 Ext.define('CfaSika.store.SettingsData', {
     extend: 'Ext.data.Store',
+
     requires: ['CfaSika.model.Settings'],
 
     config :{
@@ -7,18 +8,18 @@ Ext.define('CfaSika.store.SettingsData', {
             storeId: "SettingsData",
         autoLoad: true,
         listeners: {
-            load: function() {
-                console.log("SettingsData Load");
-            },
-            beforesync: function() {
-                console.log("SettingsData Before Sync");
-            },
-            refresh: function() {
-                console.log("SettingsData Refresh");
-            },
-            updaterecord : function() {
-                console.log("SettingsData Update Record");
-            }
+//            load: function() {
+//                this.properties.dataHasLoaded = true;
+//            }
+//            beforesync: function() {
+//                console.log("SettingsData Before Sync");
+//            },
+//            refresh: function() {
+//                console.log("SettingsData Refresh");
+//            },
+//            updaterecord : function() {
+//                console.log("SettingsData Update Record");
+//            }
         }
     },
 
