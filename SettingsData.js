@@ -22,26 +22,49 @@ Ext.define('CfaSika.store.SettingsData', {
         }
     },
 
-    getSetting: function(key, defaultValue) {
-        var settingRecord = this.queryBy(
-            'key',
-            key
-        )
+    getSetting: function(dataKey, defaultValue) {
 
+        var returnValue = defaultValue;
+
+        // Query the settings database for an existing record
+        var settingRecord = this.queryBy(function(record, id){
+            if (record.get('dataKey') === dataKey) return true;
+                else return false;
+        }, this);
+
+        // Test for the record data
         if (!settingRecord.length) {
-            // Set the setting
-            this.setSetting(key, defaultValue);
+            // Empty so set the setting
+            this.setSetting(dataKey, defaultValue);
+        } else {
+            // Found data so return the value
+            returnValue = settingRecord.first().get('dataValue');
         }
 
-        console.log(settingRecord);
+        return returnValue;
     },
 
-    setSetting: function(key, value) {
-        var newSettingRecord = new CfaSika.model.Settings();
-        newSettingRecord.set('key', key);
-        newSettingRecord.set('data', value);
-        newSettingRecord.save();
+    setSetting: function(dataKey, dataValue) {
 
-        console.log(newSettingRecord.data);
+        // Query the settings database for an existing record
+        var settingRecord = this.queryBy(function(record, id){
+            if (record.get('dataKey') === dataKey) return true;
+            else return false;
+        }, this);
+
+        // Test for the record data
+        if (!settingRecord.length) {
+            // No record exists so add one.
+            this.add({
+                'dataKey': dataKey,
+                'dataValue': dataValue
+            });
+        } else {
+            // A record was found so update the existing
+            settingRecord.first().set('dataValue', dataValue);
+        }
+
+        // Save the data
+        this.sync();
     }
 });
